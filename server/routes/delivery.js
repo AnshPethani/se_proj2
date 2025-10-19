@@ -67,6 +67,8 @@ router.post('/accept/:orderId', async (req, res) => {
     const { orderId } = req.params;
     const { riderId } = req.body;
 
+    console.log(`Accept order request: orderId=${orderId}, riderId=${riderId}`);
+
     if (!riderId) {
       return res.status(400).json({ error: 'Rider ID required' });
     }
@@ -78,21 +80,38 @@ router.post('/accept/:orderId', async (req, res) => {
     }
 
     const orderData = orderDoc.data();
+    console.log(`Order data: status=${orderData.status}, deliveryPartnerId=${orderData.deliveryPartnerId}`);
     
     // Check if order is still available for assignment
     if (orderData.deliveryPartnerId && orderData.deliveryPartnerId !== null) {
+      console.log(`Order ${orderId} already assigned to ${orderData.deliveryPartnerId}`);
       return res.status(409).json({ error: 'Order has already been assigned to another rider' });
     }
 
     if (orderData.status !== 'ready') {
+      console.log(`Order ${orderId} status is ${orderData.status}, not ready`);
       return res.status(400).json({ error: 'Order is not ready for delivery' });
     }
 
-    // Check if rider exists (allow multiple orders per rider)
+    // Check if rider exists
     const rider = await User.findById(riderId);
     if (!rider) {
+      console.log(`Rider ${riderId} not found`);
       return res.status(400).json({ error: 'Rider not found' });
     }
+
+    // Check if rider already has active orders (prevent multiple orders)
+    const activeOrdersSnapshot = await db.collection('orders')
+      .where('deliveryPartnerId', '==', riderId)
+      .where('status', 'in', ['ready', 'out_for_delivery'])
+      .get();
+    
+    if (!activeOrdersSnapshot.empty) {
+      console.log(`Rider ${riderId} already has ${activeOrdersSnapshot.docs.length} active orders`);
+      return res.status(400).json({ error: 'You already have an active order. Complete it before accepting another.' });
+    }
+
+    console.log(`Assigning order ${orderId} to rider ${riderId}`);
 
     // Assign order to rider (first-come-first-serve)
     const orderRef = db.collection('orders').doc(orderId);
@@ -102,6 +121,8 @@ router.post('/accept/:orderId', async (req, res) => {
       assignedAt: new Date(),
       updatedAt: new Date()
     });
+
+    console.log(`Order ${orderId} successfully assigned to rider ${riderId}`);
 
     // Don't update rider status to busy - allow multiple orders
     // await rider.updateDeliveryStatus('busy');

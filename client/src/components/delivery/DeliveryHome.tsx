@@ -61,6 +61,11 @@ const DeliveryHome: React.FC = () => {
     total + (order.totalAmount * 0.1), 0
   );
 
+  // Check if rider has any active orders (ready or out_for_delivery)
+  const hasActiveOrders = assignedOrders.some((order: any) => 
+    ['ready', 'out_for_delivery'].includes(order.status)
+  );
+
   return (
     <div className="delivery-home">
       <div className="welcome-section">
@@ -109,6 +114,11 @@ const DeliveryHome: React.FC = () => {
         <div className="available-orders">
           <h3>🚨 Available Orders ({availableOrders.length})</h3>
           <p>These orders are ready for pickup. <strong>First come, first serve!</strong> Click "Accept" to claim them.</p>
+          {hasActiveOrders && (
+            <div className="restriction-notice">
+              <p><strong>⚠️ You have an active order. Complete it before accepting another.</strong></p>
+            </div>
+          )}
           <div className="orders-list">
             {availableOrders.map((order: any) => (
               <div key={order.id} className="order-card available">

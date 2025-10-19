@@ -66,8 +66,11 @@ const OrderManagement: React.FC = () => {
     onSuccess: (data) => {
       console.log('Mutation: Success', data);
       queryClient.invalidateQueries({ queryKey: ['deliveryOrders'] });
-      queryClient.invalidateQueries({ queryKey: ['availableOrders'] });
       queryClient.invalidateQueries({ queryKey: ['currentUser'] });
+      // Invalidate available orders after a short delay to allow server processing
+      setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ['availableOrders'] });
+      }, 1000);
       alert('Order accepted successfully!');
     },
     onError: (error: any) => {
@@ -75,7 +78,8 @@ const OrderManagement: React.FC = () => {
       if (error.response?.status === 409) {
         alert('This order has already been taken by another rider!');
       } else if (error.response?.status === 400) {
-        alert('You are not available or the order is not ready. Please check your status.');
+        const errorMessage = error.response?.data?.error || 'You are not available or the order is not ready.';
+        alert(errorMessage);
       } else {
         alert('Failed to accept order: ' + (error.response?.data?.error || 'Unknown error'));
       }
@@ -156,6 +160,11 @@ const OrderManagement: React.FC = () => {
   const readyOrders = assignedOrders.filter(order => order.status === 'ready');
   const outForDeliveryOrders = assignedOrders.filter(order => order.status === 'out_for_delivery');
   const completedOrders = assignedOrders.filter(order => order.status === 'delivered');
+  
+  // Check if rider has any active orders (ready or out_for_delivery)
+  const hasActiveOrders = assignedOrders.some(order => 
+    ['ready', 'out_for_delivery'].includes(order.status)
+  );
 
   return (
     <div className="delivery-order-management">
@@ -166,6 +175,11 @@ const OrderManagement: React.FC = () => {
       <div className="orders-section">
         <h2>🚨 Available Orders ({availableOrders.length}) - First Come, First Serve!</h2>
         <p className="section-description">These orders are ready for pickup. Click "Accept Order" to claim them before other riders do!</p>
+        {hasActiveOrders && (
+          <div className="restriction-notice">
+            <p><strong>⚠️ You have an active order. Complete it before accepting another.</strong></p>
+          </div>
+        )}
         {availableOrders.length === 0 ? (
           <p className="no-orders">No orders available for pickup</p>
         ) : (
@@ -200,10 +214,14 @@ const OrderManagement: React.FC = () => {
                 <div className="order-actions">
                   <button 
                     className="btn btn-success"
-                    onClick={() => handleAcceptOrder(order.id)}
-                    disabled={acceptOrderMutation.isPending}
+                    onClick={() => {
+                      console.log('Button clicked for order:', order.id);
+                      handleAcceptOrder(order.id);
+                    }}
+                    disabled={acceptOrderMutation.isPending || hasActiveOrders}
                   >
-                    Accept Order
+                    {acceptOrderMutation.isPending ? 'Accepting...' : 
+                     hasActiveOrders ? 'Complete current order first' : 'Accept Order'}
                   </button>
                 </div>
               </div>
