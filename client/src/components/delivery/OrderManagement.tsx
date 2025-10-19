@@ -44,7 +44,9 @@ const OrderManagement: React.FC = () => {
   const { data: availableOrders = [] } = useQuery<Order[]>({
     queryKey: ['availableOrders'],
     queryFn: async () => {
+      console.log('OrderManagement: Fetching available orders...');
       const response = await api.get('/delivery/available');
+      console.log('OrderManagement: Available orders response:', response.data);
       return response.data.orders;
     },
     refetchInterval: 10000, // Refetch every 10 seconds

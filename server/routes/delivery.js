@@ -224,19 +224,31 @@ router.post('/deliver/:orderId', async (req, res) => {
 // Get available orders for assignment
 router.get('/available', async (req, res) => {
   try {
+    console.log('Fetching available orders...');
+    
     // Get orders that are ready but not yet assigned
+    // We need to get all ready orders and filter out those with deliveryPartnerId
     const ordersSnapshot = await db.collection('orders')
       .where('status', '==', 'ready')
-      .where('deliveryPartnerId', '==', null)
       .get();
     
-    const orders = ordersSnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-      createdAt: doc.data().createdAt?.toDate?.() || new Date(),
-      updatedAt: doc.data().updatedAt?.toDate?.() || new Date()
-    }));
+    console.log(`Found ${ordersSnapshot.docs.length} orders with status 'ready'`);
+    
+    // Filter orders that don't have a deliveryPartnerId or have it as null
+    const orders = ordersSnapshot.docs
+      .map(doc => {
+        const data = doc.data();
+        console.log(`Order ${doc.id}: deliveryPartnerId = ${data.deliveryPartnerId}`);
+        return {
+          id: doc.id,
+          ...data,
+          createdAt: data.createdAt?.toDate?.() || new Date(),
+          updatedAt: data.updatedAt?.toDate?.() || new Date()
+        };
+      })
+      .filter(order => !order.deliveryPartnerId);
 
+    console.log(`Returning ${orders.length} available orders`);
     res.json({ orders });
   } catch (error) {
     console.error('Get available orders error:', error);
