@@ -63,6 +63,17 @@ const OrderManagement: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ['deliveryOrders'] });
       queryClient.invalidateQueries({ queryKey: ['availableOrders'] });
       queryClient.invalidateQueries({ queryKey: ['currentUser'] });
+      alert('Order accepted successfully!');
+    },
+    onError: (error: any) => {
+      console.error('Accept order error:', error);
+      if (error.response?.status === 409) {
+        alert('This order has already been taken by another rider!');
+      } else if (error.response?.status === 400) {
+        alert('You are not available or the order is not ready. Please check your status.');
+      } else {
+        alert('Failed to accept order: ' + (error.response?.data?.error || 'Unknown error'));
+      }
     }
   });
 
@@ -147,7 +158,8 @@ const OrderManagement: React.FC = () => {
 
       {/* Available Orders - Can Accept */}
       <div className="orders-section">
-        <h2>Available Orders ({availableOrders.length})</h2>
+        <h2>🚨 Available Orders ({availableOrders.length}) - First Come, First Serve!</h2>
+        <p className="section-description">These orders are ready for pickup. Click "Accept Order" to claim them before other riders do!</p>
         {availableOrders.length === 0 ? (
           <p className="no-orders">No orders available for pickup</p>
         ) : (

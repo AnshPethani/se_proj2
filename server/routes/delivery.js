@@ -61,7 +61,7 @@ router.get('/orders', async (req, res) => {
   }
 });
 
-// Accept delivery assignment
+// Accept delivery assignment (first-come-first-serve)
 router.post('/accept/:orderId', async (req, res) => {
   try {
     const { orderId } = req.params;
@@ -71,7 +71,30 @@ router.post('/accept/:orderId', async (req, res) => {
       return res.status(400).json({ error: 'Rider ID required' });
     }
 
-    // Update order status and assign rider
+    // Check if order is still available (not assigned to another rider)
+    const orderDoc = await db.collection('orders').doc(orderId).get();
+    if (!orderDoc.exists) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+
+    const orderData = orderDoc.data();
+    
+    // Check if order is still available for assignment
+    if (orderData.deliveryPartnerId !== null) {
+      return res.status(409).json({ error: 'Order has already been assigned to another rider' });
+    }
+
+    if (orderData.status !== 'ready') {
+      return res.status(400).json({ error: 'Order is not ready for delivery' });
+    }
+
+    // Check if rider is available
+    const rider = await User.findById(riderId);
+    if (!rider || rider.deliveryStatus !== 'free') {
+      return res.status(400).json({ error: 'Rider is not available' });
+    }
+
+    // Assign order to rider (first-come-first-serve)
     const orderRef = db.collection('orders').doc(orderId);
     await orderRef.update({
       status: 'out_for_delivery',
@@ -81,10 +104,7 @@ router.post('/accept/:orderId', async (req, res) => {
     });
 
     // Update rider status to busy
-    const rider = await User.findById(riderId);
-    if (rider) {
-      await rider.updateDeliveryStatus('busy');
-    }
+    await rider.updateDeliveryStatus('busy');
 
     res.json({
       message: 'Order accepted successfully',
@@ -97,7 +117,7 @@ router.post('/accept/:orderId', async (req, res) => {
   }
 });
 
-// Reject delivery assignment
+// Reject delivery assignment (remove assignment, make available again)
 router.post('/reject/:orderId', async (req, res) => {
   try {
     const { orderId } = req.params;
@@ -107,27 +127,17 @@ router.post('/reject/:orderId', async (req, res) => {
       return res.status(400).json({ error: 'Rider ID required' });
     }
 
-    // Remove rider assignment and find next free rider
+    // Remove rider assignment - order becomes available for other riders
     const orderRef = db.collection('orders').doc(orderId);
     await orderRef.update({
       deliveryPartnerId: null,
       assignedAt: null,
+      status: 'ready', // Reset to ready status
       updatedAt: new Date()
     });
 
-    // Try to assign to next free rider
-    const freeRiders = await User.findFreeRiders();
-    if (freeRiders.length > 0) {
-      const nextRider = freeRiders[0];
-      await orderRef.update({
-        deliveryPartnerId: nextRider.id,
-        assignedAt: new Date(),
-        updatedAt: new Date()
-      });
-    }
-
     res.json({
-      message: 'Order rejected, reassigned to next available rider',
+      message: 'Order rejected, now available for other riders',
       orderId: orderId
     });
   } catch (error) {

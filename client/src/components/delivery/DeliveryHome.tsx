@@ -102,11 +102,11 @@ const DeliveryHome: React.FC = () => {
         </div>
       </div>
 
-      {/* Available Orders Section */}
-      {availableOrders.length > 0 && (currentUser?.deliveryStatus || user?.deliveryStatus) === 'free' && (
+      {/* Available Orders Section - PRIORITY */}
+      {availableOrders.length > 0 && (
         <div className="available-orders">
-          <h3>Available Orders ({availableOrders.length})</h3>
-          <p>These orders are ready for pickup. Click "Accept" to take them.</p>
+          <h3>🚨 Available Orders ({availableOrders.length})</h3>
+          <p>These orders are ready for pickup. <strong>First come, first serve!</strong> Click "Accept" to claim them.</p>
           <div className="orders-list">
             {availableOrders.map((order: any) => (
               <div key={order.id} className="order-card available">
@@ -118,6 +118,7 @@ const DeliveryHome: React.FC = () => {
                   <p><strong>Total:</strong> ${order.totalAmount.toFixed(2)}</p>
                   <p><strong>Items:</strong> {order.items.length} item(s)</p>
                   <p><strong>Restaurant:</strong> {order.restaurantId}</p>
+                  <p><strong>Ready since:</strong> {new Date(order.updatedAt).toLocaleString()}</p>
                 </div>
                 <div className="order-actions">
                   <button 
