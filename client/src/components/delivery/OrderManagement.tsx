@@ -56,19 +56,22 @@ const OrderManagement: React.FC = () => {
   // Accept order mutation
   const acceptOrderMutation = useMutation({
     mutationFn: async (orderId: string) => {
+      console.log('Mutation: Accepting order', orderId, 'for rider', user?.id);
       const response = await api.post(`/delivery/accept/${orderId}`, {
         riderId: user?.id
       });
+      console.log('Mutation: Accept response', response.data);
       return response.data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log('Mutation: Success', data);
       queryClient.invalidateQueries({ queryKey: ['deliveryOrders'] });
       queryClient.invalidateQueries({ queryKey: ['availableOrders'] });
       queryClient.invalidateQueries({ queryKey: ['currentUser'] });
       alert('Order accepted successfully!');
     },
     onError: (error: any) => {
-      console.error('Accept order error:', error);
+      console.error('Mutation: Accept order error:', error);
       if (error.response?.status === 409) {
         alert('This order has already been taken by another rider!');
       } else if (error.response?.status === 400) {
@@ -125,6 +128,7 @@ const OrderManagement: React.FC = () => {
   });
 
   const handleAcceptOrder = (orderId: string) => {
+    console.log('Accepting order:', orderId);
     acceptOrderMutation.mutate(orderId);
   };
 

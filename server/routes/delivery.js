@@ -80,7 +80,7 @@ router.post('/accept/:orderId', async (req, res) => {
     const orderData = orderDoc.data();
     
     // Check if order is still available for assignment
-    if (orderData.deliveryPartnerId !== null) {
+    if (orderData.deliveryPartnerId && orderData.deliveryPartnerId !== null) {
       return res.status(409).json({ error: 'Order has already been assigned to another rider' });
     }
 
@@ -88,10 +88,10 @@ router.post('/accept/:orderId', async (req, res) => {
       return res.status(400).json({ error: 'Order is not ready for delivery' });
     }
 
-    // Check if rider is available
+    // Check if rider exists (allow multiple orders per rider)
     const rider = await User.findById(riderId);
-    if (!rider || rider.deliveryStatus !== 'free') {
-      return res.status(400).json({ error: 'Rider is not available' });
+    if (!rider) {
+      return res.status(400).json({ error: 'Rider not found' });
     }
 
     // Assign order to rider (first-come-first-serve)
@@ -103,8 +103,8 @@ router.post('/accept/:orderId', async (req, res) => {
       updatedAt: new Date()
     });
 
-    // Update rider status to busy
-    await rider.updateDeliveryStatus('busy');
+    // Don't update rider status to busy - allow multiple orders
+    // await rider.updateDeliveryStatus('busy');
 
     res.json({
       message: 'Order accepted successfully',
@@ -204,10 +204,19 @@ router.post('/deliver/:orderId', async (req, res) => {
     // Award points to customer
     await awardPointsForOrder(orderData.customerId, orderData.totalAmount);
 
-    // Update rider status to free
+    // Check if rider has other active orders before setting to free
     const rider = await User.findById(riderId);
     if (rider) {
-      await rider.updateDeliveryStatus('free');
+      // Check if rider has other active orders
+      const activeOrdersSnapshot = await db.collection('orders')
+        .where('deliveryPartnerId', '==', riderId)
+        .where('status', 'in', ['ready', 'out_for_delivery'])
+        .get();
+      
+      // Only set to free if no other active orders
+      if (activeOrdersSnapshot.empty) {
+        await rider.updateDeliveryStatus('free');
+      }
     }
 
     res.json({
