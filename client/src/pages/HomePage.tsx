@@ -95,12 +95,12 @@ const HomePage: React.FC = () => {
                   <div className="stat-label">Meals Donated</div>
                 </div>
                 <div className="stat-item">
-                  <div className="stat-number">{donationStats.totalOrders}</div>
-                  <div className="stat-label">Orders Delivered</div>
-                </div>
-                <div className="stat-item">
                   <div className="stat-number">{donationStats.nextDonationIn}</div>
                   <div className="stat-label">Orders Until Next Donation</div>
+                </div>
+                <div className="stat-item">
+                  <div className="stat-number">{donationStats.totalOrders}</div>
+                  <div className="stat-label">Orders Delivered</div>
                 </div>
               </div>
             </div>

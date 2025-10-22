@@ -30,7 +30,7 @@ router.get('/stats', async (req, res) => {
 
     res.json({
       totalOrders: totalDeliveredOrders,
-      mealsDonated: donationCounter,
+      mealsDonated: mealsDonated,
       nextDonationIn: 10 - (totalDeliveredOrders % 10)
     });
   } catch (error) {
