@@ -28,36 +28,6 @@
   margin-bottom: 40px;
 }
 
-.stat-card {
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.stat-icon {
-  font-size: 2.5rem;
-}
-
-.stat-content {
-  text-align: left;
-}
-
-.stat-number {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 5px;
-}
-
-.stat-label {
-  color: #666;
-  font-size: 0.9rem;
-}
-
 .pending-orders h3 {
   font-size: 1.5rem;
   margin-bottom: 20px;
