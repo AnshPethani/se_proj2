@@ -11,10 +11,9 @@ Hungry Wolf is a full-stack web application built with modern technologies to cr
 
 ```
 hungry-wolf/
-├── client/          # React frontend
-├── server/          # Node.js backend
-├── docs/           # Documentation
-└── shared/         # Shared types and utilities
+├── frontend/          # React frontend
+├── backend/          # Node.js backend
+└── docs/           # Documentation
 ```
 
 ## 🚀 Quick Start
