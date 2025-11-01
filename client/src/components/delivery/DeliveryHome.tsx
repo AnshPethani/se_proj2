@@ -140,7 +140,7 @@ const DeliveryHome: React.FC = () => {
                       window.location.href = '/delivery/orders';
                     }}
                   >
-                    Accept Order
+                    See Order
                   </button>
                 </div>
               </div>

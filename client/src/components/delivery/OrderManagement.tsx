@@ -230,62 +230,6 @@ const OrderManagement: React.FC = () => {
         )}
       </div>
 
-      {/* Ready Orders - Need Acceptance */}
-      <div className="orders-section">
-        <h2>Ready for Pickup ({readyOrders.length})</h2>
-        {readyOrders.length === 0 ? (
-          <p className="no-orders">No orders ready for pickup</p>
-        ) : (
-          <div className="orders-list">
-            {readyOrders.map((order) => (
-              <div key={order.id} className="order-card ready">
-                <div className="order-header">
-                  <h3>Order #{order.id.slice(-6)}</h3>
-                  <span 
-                    className="order-status"
-                    style={{ color: getStatusColor(order.status) }}
-                  >
-                    {order.status.replace('_', ' ').toUpperCase()}
-                  </span>
-                </div>
-                
-                <div className="order-items">
-                  <h4>Items:</h4>
-                  <ul>
-                    {order.items.map((item, index) => (
-                      <li key={index}>
-                        {item.quantity}x {item.name} - ${item.price.toFixed(2)}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="order-total">
-                  <strong>Total: ${order.totalAmount.toFixed(2)}</strong>
-                </div>
-
-                <div className="order-actions">
-                  <button 
-                    className="btn btn-success"
-                    onClick={() => handleAcceptOrder(order.id)}
-                    disabled={acceptOrderMutation.isPending}
-                  >
-                    Accept & Pick Up
-                  </button>
-                  <button 
-                    className="btn btn-danger"
-                    onClick={() => handleRejectOrder(order.id)}
-                    disabled={rejectOrderMutation.isPending}
-                  >
-                    Reject
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
       {/* Out for Delivery Orders */}
       <div className="orders-section">
         <h2>Out for Delivery ({outForDeliveryOrders.length})</h2>

@@ -33,10 +33,10 @@
   font-size: 0.9rem;
 }
 
-.status-badge.free {
+/* .status-badge.free {
   background-color: #4caf50;
   color: white;
-}
+} */
 
 .status-badge.busy {
   background-color: #f44336;
