@@ -133,7 +133,12 @@ const Orders: React.FC = () => {
           <h2>Order History ({completedOrders.length})</h2>
           <div className="orders-list">
             {completedOrders.map((order: any) => (
-              <div key={order.id} className="order-card completed">
+              <div
+                key={order.id}
+                className={`order-card ${
+                  order.status === 'cancelled' ? 'cancelled' : 'completed'
+                }`}
+              >
                 <div className="order-header">
                   <h3>Order #{order.id.slice(-6)}</h3>
                   <span className={`status status-${order.status}`}>

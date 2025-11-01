@@ -173,7 +173,7 @@ const OrderManagement: React.FC = () => {
 
       {/* Available Orders - Can Accept */}
       <div className="orders-section">
-        <h2>🚨 Available Orders ({availableOrders.length}) - First Come, First Serve!</h2>
+        <h2>Available Orders ({availableOrders.length}) - First Come, First Serve!</h2>
         <p className="section-description">These orders are ready for pickup. Click "Accept Order" to claim them before other riders do!</p>
         {hasActiveOrders && (
           <div className="restriction-notice">

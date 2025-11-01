@@ -211,7 +211,10 @@ const OrderManagement: React.FC = () => {
         ) : (
           <div className="orders-list">
             {completedOrders.map((order) => (
-              <div key={order.id} className="order-card completed">
+              <div
+                key={order.id}
+                className={`order-card ${order.status === 'cancelled' ? 'cancelled' : 'completed'}`}
+              >
                 <div className="order-header">
                   <h3>Order #{order.id.slice(-6)}</h3>
                   <span 

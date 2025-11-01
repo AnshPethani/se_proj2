@@ -163,13 +163,14 @@
 .stat-number {
   font-size: 3rem;
   font-weight: bold;
-  color: lightgrey;
+  color: white;
   margin-bottom: 10px;
 }
 
 .stat-label {
   font-size: 1.1rem;
   opacity: 0.9;
+  color: white;
 }
 
 .cta {

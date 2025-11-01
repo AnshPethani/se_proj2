@@ -71,11 +71,6 @@ const DeliveryHome: React.FC = () => {
       <div className="welcome-section">
         <h2>Welcome, {user?.profile?.name || 'Delivery Partner'}! 🚚</h2>
         <p>Manage your delivery assignments and track your orders.</p>
-        <div className="status-indicator">
-          <span className={`status-badge ${(currentUser?.deliveryStatus || user?.deliveryStatus) === 'free' ? 'free' : 'busy'}`}>
-            {(currentUser?.deliveryStatus || user?.deliveryStatus) === 'free' ? '🟢 Available' : '🔴 Busy'}
-          </span>
-        </div>
       </div>
 
       <div className="orders-overview">

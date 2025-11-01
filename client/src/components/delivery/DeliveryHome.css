@@ -21,27 +21,6 @@
   opacity: 0.9;
 }
 
-.status-indicator {
-  margin-top: 15px;
-}
-
-.status-badge {
-  display: inline-block;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-weight: bold;
-  font-size: 0.9rem;
-}
-
-/* .status-badge.free {
-  background-color: #4caf50;
-  color: white;
-} */
-
-.status-badge.busy {
-  background-color: #f44336;
-  color: white;
-}
 
 .orders-overview {
   display: grid;

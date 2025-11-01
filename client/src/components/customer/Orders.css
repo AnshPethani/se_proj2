@@ -36,6 +36,11 @@
   opacity: 0.9;
 }
 
+.order-card.cancelled {
+  border-left: 4px solid #f44336;
+  opacity: 0.9;
+}
+
 .orders-section {
   margin-bottom: 40px;
 }

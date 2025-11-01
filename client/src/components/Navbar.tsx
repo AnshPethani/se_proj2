@@ -47,6 +47,12 @@ const Navbar: React.FC = () => {
                   Restaurants
                 </Link>
               )}
+
+              {user.role === 'customer' && (
+                <Link to="/customer/orders" className="navbar-link">
+                  Orders
+                </Link>
+              )}
               
               {user.role === 'customer' && (
                 <Link to="/customer/cart" className="navbar-link cart-link">
