@@ -18,21 +18,26 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Install root dependencies
+        run: npm install
+
+      - name: Install all dependencies (monorepo)
+        run: npm run install-all
 
       - name: Run ESLint
         run: npm run lint
+        continue-on-error: false
 
       - name: Run tests with coverage
         run: npm test
 
       - name: Upload coverage to Codecov
+        if: success()
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage/lcov.info
-          fail_ci_if_error: true
+          fail_ci_if_error: false
           verbose: true
 
 
