@@ -2,15 +2,18 @@ module.exports = {
   testEnvironment: 'node',
   testMatch: ['**/tests/**/*.test.js'],
   collectCoverageFrom: [
-    '**/*.js',
+    'tests/**/*.js',
     '!**/node_modules/**',
-    '!**/client/**',
-    '!**/server/**',
     '!**/coverage/**',
-    '!jest.config.js',
-    '!**/.*.js'
+    '!jest.config.js'
   ],
   coverageDirectory: 'coverage',
-  coverageReporters: ['text', 'lcov', 'html']
+  coverageReporters: ['text', 'lcov', 'html'],
+  coveragePathIgnorePatterns: [
+    '/node_modules/',
+    '/client/',
+    '/server/',
+    '/coverage/'
+  ]
 };
 
