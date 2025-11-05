@@ -35,7 +35,7 @@ jobs:
         if: success()
         uses: codecov/codecov-action@v4
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          token: ${02a5ee64-a197-4d21-b26b-dd703e735ce4}
           files: ./coverage/lcov.info
           fail_ci_if_error: false
           verbose: true
