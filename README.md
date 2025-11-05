@@ -3,7 +3,6 @@
 [![codecov](https://codecov.io/gh/AnshPethani/se_proj2/graph/badge.svg?token=IP0Q2W2HDN)](https://codecov.io/gh/AnshPethani/se_proj2)
 [![ESLint](https://img.shields.io/badge/code_style-ESLint-blue.svg)](https://eslint.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](docs/LICENSE.md)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.123456.svg)](https://doi.org/10.5281/zenodo.123456)
 [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](docs/CONTRIBUTING.md)
 
 # Hungry Wolf 🐺
