@@ -1,6 +1,6 @@
 <!-- CI/CD and quality badges -->
 [![Build Status](https://github.com/AnshPethani/se_proj2/actions/workflows/ci.yml/badge.svg)](https://github.com/AnshPethani/se_proj2/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/AnshPethani/se_proj2/branch/main/graph/badge.svg)](https://codecov.io/gh/AnshPethani/se_proj2)
+[![codecov](https://codecov.io/gh/AnshPethani/se_proj2/graph/badge.svg?token=IP0Q2W2HDN)](https://codecov.io/gh/AnshPethani/se_proj2)
 [![ESLint](https://img.shields.io/badge/code_style-ESLint-blue.svg)](https://eslint.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](docs/LICENSE.md)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.123456.svg)](https://doi.org/10.5281/zenodo.123456)
