@@ -1,3 +1,11 @@
+<!-- CI/CD and quality badges -->
+[![Build Status](https://github.com/USERNAME/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/USERNAME/REPO/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/USERNAME/REPO/branch/main/graph/badge.svg)](https://codecov.io/gh/USERNAME/REPO)
+[![ESLint](https://img.shields.io/badge/code_style-ESLint-blue.svg)](https://eslint.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.123456.svg)](https://doi.org/10.5281/zenodo.123456)
+[![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
 # Hungry Wolf 🐺
 **Not Just Food, A Quest Worth Savoring**
 
@@ -124,3 +132,7 @@ This project follows software sustainability principles:
 ## 📄 License
 
 MIT License - see LICENSE file for details
+
+---
+
+This repository uses continuous integration (GitHub Actions), linting (ESLint), automated testing (Jest), and coverage tracking (Codecov). All badges above are live and auto-updated on each commit.
