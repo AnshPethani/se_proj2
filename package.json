@@ -9,7 +9,7 @@
     "client": "cd client && npm start",
     "build": "cd client && npm run build",
     "install-all": "npm install && cd server && npm install && cd ../client && npm install",
-    "lint": "eslint . --ignore-path .eslintignore",
+    "lint": "eslint --config .eslintrc.json tests/ jest.config.js",
     "test": "jest --coverage"
   },
   "keywords": [
