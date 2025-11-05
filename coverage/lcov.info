@@ -1,5 +1,5 @@
 TN:
-SF:src\utils\businessLogic.js
+SF:src/utils/businessLogic.js
 FN:5,calculatePointsForOrder
 FN:18,calculatePointsForReview
 FN:22,calculateDiscountFromPoints
