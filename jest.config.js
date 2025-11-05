@@ -2,7 +2,7 @@ module.exports = {
   testEnvironment: 'node',
   testMatch: ['**/tests/**/*.test.js'],
   collectCoverageFrom: [
-    'tests/**/*.js',
+    'src/**/*.js',
     '!**/node_modules/**',
     '!**/coverage/**',
     '!jest.config.js'
@@ -13,7 +13,8 @@ module.exports = {
     '/node_modules/',
     '/client/',
     '/server/',
-    '/coverage/'
+    '/coverage/',
+    '/tests/'
   ]
 };
 
